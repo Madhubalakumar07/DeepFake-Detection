@@ -219,10 +219,11 @@ if page == "Analyze media":
 else:
     st.markdown('<div class="eyebrow">Behind the detection</div>', unsafe_allow_html=True)
     st.markdown("<h1>Two models.<br>One clear signal.</h1>", unsafe_allow_html=True)
+    st.markdown('<p class="hero-copy">This project uses transfer learning: proven pretrained vision architectures are adapted and fine-tuned for deepfake detection, combining strong visual representations with a focused forensic classification task.</p>', unsafe_allow_html=True)
     st.write("")
     col1, col2 = st.columns(2, gap="large")
     with col1:
-        st.markdown('<div class="panel"><div class="eyebrow">For images</div><h2>EfficientNet-B0</h2><p style="color:#9ba4c3;line-height:1.7">A compact convolutional classifier trained to separate authentic and manipulated face imagery. Images are resized to 224 × 224 and normalized with ImageNet statistics.</p></div>', unsafe_allow_html=True)
+        st.markdown('<div class="panel"><div class="eyebrow">For images · transfer learning</div><h2>EfficientNet-B0</h2><p style="color:#9ba4c3;line-height:1.7">An ImageNet-pretrained EfficientNet-B0 adapted through transfer learning and fine-tuned to separate authentic and manipulated face imagery. Images are resized to 224 × 224 and normalized with ImageNet statistics.</p></div>', unsafe_allow_html=True)
     with col2:
-        st.markdown('<div class="panel"><div class="eyebrow">For video</div><h2>DeepGuard</h2><p style="color:#9ba4c3;line-height:1.7">A multi-scale Efficient GCViT model that samples 20 frames and aggregates frame-level evidence into a single manipulation score.</p></div>', unsafe_allow_html=True)
+        st.markdown('<div class="panel"><div class="eyebrow">For video · transfer learning</div><h2>DeepGuard</h2><p style="color:#9ba4c3;line-height:1.7">A pretrained multi-scale Efficient GCViT model adapted with transfer learning for deepfake video detection. It samples 20 frames and aggregates frame-level evidence into a single manipulation score.</p></div>', unsafe_allow_html=True)
     st.info("Video analysis requires the DeepGuard package that provides `inference.video_predictor.VideoPredictor`. The checkpoint is already present in the model folder.")
