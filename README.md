@@ -235,8 +235,8 @@ A CUDA-compatible NVIDIA GPU is recommended for faster local inference but is no
 Replace the placeholder URL with your actual repository URL.
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
-cd YOUR_REPOSITORY
+git clone https://github.com/Madhubalakumar07/DeepFake-Detection.git
+cd DeepFake-Detection
 ```
 
 ### 2. Create a Virtual Environment
