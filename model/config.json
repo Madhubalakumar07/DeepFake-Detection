@@ -1,0 +1,11 @@
+{
+    "model_name": "ms_eff_gcvit_b0",
+    "margin_ratio": 0.2,
+    "img_size": [
+        224,
+        224
+    ],
+    "num_frames": 20,
+    "agg_mode": "conf",
+    "tta_hflip": 0.0
+}

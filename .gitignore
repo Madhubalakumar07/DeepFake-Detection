@@ -42,7 +42,6 @@ scripts/download-FaceForensics.py
 # PyTorch Models / Checkpoints
 # ==========================================
 *.pt
-*.pth
 *.ckpt
 *.onnx
 *.safetensors
