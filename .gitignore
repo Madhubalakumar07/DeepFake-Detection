@@ -30,6 +30,7 @@ ENV/
 # ==========================================
 # Datasets (Images and Videos)
 # ==========================================
+datasets/
 datasets/images/
 datasets/videos/
 
