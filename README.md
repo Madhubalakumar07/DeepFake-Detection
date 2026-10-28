@@ -1,6 +1,6 @@
 # Deepfake Detection Using Deep Learning
 
-An AI-powered deepfake detection system that analyzes images and videos to identify potential digital manipulation. The project combines an **EfficientNet-B0 image classification model built with PyTorch** and a **pretrained DeepGuard video detection model** to provide separate detection pipelines for images and videos through a Streamlit web application.
+An AI-powered deepfake detection system that analyzes images and videos to identify potential digital manipulation. The project combines an **EfficientNet-B4 image classification model built with PyTorch** and a **pretrained DeepGuard video detection model** to provide separate detection pipelines for images and videos through a Streamlit web application.
 
 ## Table of Contents
 
@@ -27,14 +27,14 @@ Deepfakes are synthetic or manipulated images and videos created using artificia
 
 This project aims to detect potential deepfake content using deep learning. It supports two types of media:
 
-- **Image Detection:** Uses an EfficientNet-B0-based image classification model to classify uploaded images as real or fake.
+- **Image Detection:** Uses an EfficientNet-B4-based image classification model to classify uploaded images as real or fake.
 - **Video Detection:** Uses the pretrained DeepGuard `ms_eff_gcvit_b0` model and its video inference pipeline to analyze uploaded videos.
 
 The two models operate through separate inference pipelines suited to their respective input types. A Streamlit interface allows users to upload media and view the corresponding prediction.
 
 ## Features
 
-- **Image Deepfake Detection:** Classifies images using the EfficientNet-B0 model.
+- **Image Deepfake Detection:** Classifies images using the EfficientNet-B4 model.
 - **Video Deepfake Detection:** Analyzes videos using the pretrained DeepGuard model.
 - **Separate Inference Pipelines:** Uses image-specific and video-specific processing workflows.
 - **Automated Video Frame Analysis:** Samples video frames and aggregates predictions through DeepGuard's inference pipeline.
@@ -63,7 +63,7 @@ The system consists of two detection branches that share a common web interface.
       Image Processing  Video Processing
             |               |
             v               v
-      EfficientNet-B0   DeepGuard Model
+      EfficientNet-B4   DeepGuard Model
        Image Model      ms_eff_gcvit_b0
             |               |
             v               v
@@ -81,17 +81,17 @@ The image and video models are independent components. The application selects t
 
 ## Models Used
 
-### 1. EfficientNet-B0 — Image Detection
+### 1. EfficientNet-B4 — Image Detection
 
-EfficientNet-B0 is a convolutional neural network architecture designed to achieve a balance between computational efficiency and classification performance.
+EfficientNet-B4 is a convolutional neural network architecture that provides a larger capacity than EfficientNet-B0 for image classification.
 
-In this project, EfficientNet-B0 is used for image-based deepfake detection.
+In this project, EfficientNet-B4 is used for image-based deepfake detection.
 
 **Key characteristics:**
 
 - Implemented using PyTorch and Torchvision.
 - Uses transfer learning with pretrained weights as the starting point.
-- Processes images resized to 224 × 224 pixels.
+- Processes images resized to 380 × 380 pixels.
 - Applies image normalization using the ImageNet mean and standard deviation.
 - Uses a binary classification head to distinguish real and fake images.
 
@@ -99,7 +99,7 @@ In this project, EfficientNet-B0 is used for image-based deepfake detection.
 
 The image pipeline uses the following transformations:
 
-- Resize images to 224 × 224.
+- Resize images to 380 × 380.
 - Apply random horizontal flipping during training.
 - Convert images to tensors.
 - Normalize using the ImageNet channel statistics.
@@ -140,7 +140,7 @@ The current inference configuration uses:
 
 The exact behavior of the frame extractor, face detector, and score aggregation follows the DeepGuard implementation.
 
-**Important:** The video model is pretrained, while EfficientNet-B0 is the separate image detection model. The image model's evaluation results should not be treated as the video model's evaluation results.
+**Important:** The video model is pretrained, while EfficientNet-B4 is the separate image detection model. The image model's evaluation results should not be treated as the video model's evaluation results.
 
 ## Technologies Used
 
@@ -149,7 +149,7 @@ The exact behavior of the frame extractor, face detector, and score aggregation 
 | Python | Main programming language |
 | PyTorch | Deep learning and model inference |
 | Torchvision | Image transformations and EfficientNet model support |
-| EfficientNet-B0 | Image classification |
+| EfficientNet-B4 | Image classification |
 | DeepGuard | Pretrained video deepfake detection |
 | Streamlit | Web application interface |
 | OpenCV | Video and image processing |
@@ -193,7 +193,7 @@ Deepfake-Detection/
 - `saved_model/` contains the saved DeepGuard weights and inference configuration if your application loads them directly.
 - The `inference/` directory represents the DeepGuard modules required by the application; preserve the actual source files and package structure.
 - Keep large datasets and unnecessary intermediate files out of GitHub.
-- If the EfficientNet-B0 model has a separately saved checkpoint, include its actual path and loading method in the project structure.
+- If the EfficientNet-B4 model has a separately saved checkpoint, include its actual path and loading method in the project structure.
 
 ## Dataset
 
@@ -205,7 +205,7 @@ The image detection model uses the Deepfake and Real Images dataset available on
 
 The dataset contains real and manipulated images intended for deepfake classification.
 
-The image pipeline resizes and normalizes the input images before passing them to EfficientNet-B0.
+The image pipeline resizes images to 380 × 380 pixels and normalizes them before passing them to EfficientNet-B4.
 
 ### Video Dataset
 
@@ -273,7 +273,7 @@ For CUDA-enabled PyTorch, follow the official installation instructions:
 
 Make sure the application can access:
 
-- The EfficientNet-B0 checkpoint, if your implementation saves and loads one separately.
+- The EfficientNet-B4 checkpoint, if your implementation saves and loads one separately.
 - The DeepGuard pretrained weights or its supported checkpoint-loading mechanism.
 - The correct preprocessing configuration for each model.
 
@@ -302,7 +302,7 @@ Open the URL in a browser to use the application.
 1. The user selects image detection.
 2. The user uploads a supported image.
 3. The application loads the image and applies the required preprocessing.
-4. The preprocessed tensor is passed to EfficientNet-B0.
+4. The preprocessed tensor is passed to EfficientNet-B4.
 5. The model output is converted into a predicted class according to the implemented classification logic.
 6. The application displays the prediction and any supported score.
 
@@ -334,7 +334,7 @@ A reliable evaluation should measure image and video performance separately.
 
 ### Evaluation Considerations
 
-- Evaluate the EfficientNet-B0 image model on a held-out image test set.
+- Evaluate the EfficientNet-B4 image model on a held-out image test set.
 - Evaluate DeepGuard on a separate video test set.
 - Avoid overlap between training and test images, source videos, and identities where applicable.
 - Test videos from manipulation methods not represented in development data to assess generalization.

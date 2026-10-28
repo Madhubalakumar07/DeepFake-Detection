@@ -12,7 +12,8 @@ import streamlit as st
 
 
 ROOT = Path(__file__).resolve().parent
-IMAGE_WEIGHTS = ROOT / "model" / "efficientnet_b0_baseline.pth"
+IMAGE_WEIGHTS = ROOT / "model" / "efficientnet_b4.pth"
+IMAGE_SIZE = 380
 VIDEO_WEIGHTS = ROOT / "model" / "deepguard_weights.pth"
 
 
@@ -70,18 +71,18 @@ def _load_torch():
     import torch
     from PIL import Image
     from torchvision import transforms
-    from torchvision.models import efficientnet_b0
+    from torchvision.models import efficientnet_b4
     from torch import nn
 
-    return torch, Image, transforms, efficientnet_b0, nn
+    return torch, Image, transforms, efficientnet_b4, nn
 
 
 @st.cache_resource(show_spinner=False)
 def load_image_model():
-    torch, _, _, efficientnet_b0, nn = _load_torch()
+    torch, _, _, efficientnet_b4, nn = _load_torch()
     if not IMAGE_WEIGHTS.exists():
         raise FileNotFoundError(f"Image checkpoint not found: {IMAGE_WEIGHTS}")
-    model = efficientnet_b0(weights=None)
+    model = efficientnet_b4(weights=None)
     model.classifier[1] = nn.Linear(model.classifier[1].in_features, 2)
     state = torch.load(IMAGE_WEIGHTS, map_location="cpu", weights_only=True)
     model.load_state_dict(state)
@@ -94,7 +95,7 @@ def image_prediction(uploaded_file: Any) -> dict[str, float | str]:
     image = Image.open(io.BytesIO(uploaded_file.getvalue())).convert("RGB")
     transform = transforms.Compose(
         [
-            transforms.Resize((224, 224)),
+            transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
             transforms.ToTensor(),
             transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
         ]
@@ -185,7 +186,7 @@ if page == "Analyze media":
     mode = st.selectbox("Analysis mode", ["Image analysis", "Video analysis"], label_visibility="collapsed")
     if mode == "Image analysis":
         uploaded = st.file_uploader("Drop an image here", type=["jpg", "jpeg", "png", "webp"], help="Supported formats: JPG, PNG, WEBP")
-        model_name = "EfficientNet-B0"
+        model_name = "EfficientNet-B4"
     else:
         uploaded = st.file_uploader("Drop a video here", type=["mp4", "mov", "avi", "mkv"], help="Supported formats: MP4, MOV, AVI, MKV")
         model_name = "DeepGuard · MS-Eff-GCViT-B0"
@@ -223,7 +224,7 @@ else:
     st.write("")
     col1, col2 = st.columns(2, gap="large")
     with col1:
-        st.markdown('<div class="panel"><div class="eyebrow">For images · transfer learning</div><h2>EfficientNet-B0</h2><p style="color:#9ba4c3;line-height:1.7">An ImageNet-pretrained EfficientNet-B0 adapted through transfer learning and fine-tuned to separate authentic and manipulated face imagery. Images are resized to 224 × 224 and normalized with ImageNet statistics.</p></div>', unsafe_allow_html=True)
+        st.markdown('<div class="panel"><div class="eyebrow">For images · transfer learning</div><h2>EfficientNet-B4</h2><p style="color:#9ba4c3;line-height:1.7">An ImageNet-pretrained EfficientNet-B4 adapted through transfer learning and fine-tuned to separate authentic and manipulated face imagery. Images are resized to 380 × 380 and normalized with ImageNet statistics.</p></div>', unsafe_allow_html=True)
     with col2:
         st.markdown('<div class="panel"><div class="eyebrow">For video · transfer learning</div><h2>DeepGuard</h2><p style="color:#9ba4c3;line-height:1.7">A pretrained multi-scale Efficient GCViT model adapted with transfer learning for deepfake video detection. It samples 20 frames and aggregates frame-level evidence into a single manipulation score.</p></div>', unsafe_allow_html=True)
     st.info("Video analysis requires the DeepGuard package that provides `inference.video_predictor.VideoPredictor`. The checkpoint is already present in the model folder.")
